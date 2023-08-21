@@ -1,28 +1,66 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+
+const commonSectionStyle = {
+  backgroundColor: 'orange',
+  marginVertical: 10,
+  marginHorizontal: 10,
+  paddingVertical: 20,
+  paddingHorizontal: 20,
+  borderRadius: 5,
+  elevation: 3,
+};
+const commonTesteStyle = {
+  backgroundColor: '#64A3CD',
+  marginHorizontal: 10,
+  borderRadius: 5,
+};
 
 const MainScreen = () => {
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const scrollToSection = (y: number) => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y, animated: true });
+    }
+  };
+
   return (
-    // Container seguro para o conteúdo
     <SafeAreaView style={styles.container}>
-      {/* Cabeçalho */}
       <View style={styles.head}>
-        {/* Logo */}
         <Image source={require('./assets/logo oficial.png')} style={styles.logo} resizeMode="contain" />
-        {/* Container para os textos */}
-        <View style={styles.textContainer}>
-          {/* Textos */}
-          <Text style={styles.text1}>um!!!</Text>
-          <Text style={styles.text1}>dois!!!</Text>
-          <Text style={styles.text1}>tres!!!</Text>
+        <View style={styles.menuContainer}>
+          <TouchableOpacity
+            style={{ ...styles.menuButton, ...commonTesteStyle }}
+            onPress={() => scrollToSection(0)}
+          >
+            <Text style={styles.menuButtonText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ ...styles.menuButton, ...commonTesteStyle }}
+            onPress={() => scrollToSection(800)}
+          >
+            <Text style={styles.menuButtonText}>Compras</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ ...styles.menuButton, ...commonTesteStyle }}
+            onPress={() => scrollToSection(2400)} 
+          >
+            <Text style={styles.menuButtonText}>Vendas</Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-      {/* Corpo */}
-      <View style={styles.body}>
-        {/* Texto do corpo */}
-        <Text style={styles.bodyText}>TRABALHO COM O LÉO, LOGO EXISTO!!!</Text>
-      </View>
+      <ScrollView ref={scrollViewRef}>
+        <View style={{ ...styles.sectionHome, ...commonSectionStyle }}>
+          <Text style={styles.sectionText}>Seção Home</Text>
+        </View>
+        <View style={{ ...styles.sectionCompras, ...commonSectionStyle }}>
+          <Text style={styles.sectionText}>Seção Compras</Text>
+        </View>
+        <View style={{ ...styles.sectionVendas, ...commonSectionStyle }}>
+          <Text style={styles.sectionText}>Seção Vendas</Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -31,56 +69,64 @@ const styles = StyleSheet.create({
   // Estilos para o container principal
   container: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
     width: '100%',
     height: '100%',
   },
   // Estilos para o cabeçalho
   head: {
-    flexDirection: 'row', // Alinhar elementos em uma linha
-    alignItems: 'center', // Alinhar verticalmente os itens no centro
-    justifyContent: 'center', // Centralizar horizontalmente os itens
-    backgroundColor: 'blue',
-    height: '10%', // 10% da altura do container seguro
-    marginTop: '1%', // Margem superior de 1%
-    marginHorizontal: 10, // Margem horizontal de 10 pixels
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: '1%',
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   // Estilos para o logo
   logo: {
-    width: '10%', // Largura do logo em relação à tela
-    height: '100%', // Altura do logo igual à altura do cabeçalho
+    width: 150,
+    height: 50,
+    marginLeft: 10,
   },
-  // Estilos para o container de textos
-  textContainer: {
+  // Estilos para o container de botões de menu
+  menuContainer: {
     flexDirection: 'row',
-    alignItems: 'center', // Centralizar verticalmente os textos
-    justifyContent: 'space-evenly', // Espaçamento igual entre os textos
-    height: '100%',
-    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flex: 1,
   },
-  // Estilos para os textos
-  text1: {
-    flex: 1, // Ocupar espaço igualmente
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: 'black',
-    backgroundColor: 'pink',
-    textAlign: 'center', // Centralizar horizontalmente o texto
-    marginHorizontal: 10, // Espaçamento horizontal entre os textos
+  // Estilos para os botões de menu
+  menuButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    elevation: 3,
   },
-  // Estilos para o corpo
-  body: {
+  // Estilos para as seções
+  sectionHome: {
     backgroundColor: 'orange',
-    flex: 1, // Ocupar espaço restante
-    marginVertical: 10, // Margem vertical de 10 pixels
-    paddingHorizontal: 20, // Espaçamento horizontal de 20 pixels
-    marginHorizontal: 10, // Margem horizontal de 10 pixels
+    height: 800,
   },
-  // Estilos para o texto do corpo
-  bodyText: {
+  sectionCompras: {
+    backgroundColor: 'red',
+    height: 1600,
+  },
+  sectionVendas: {
+    backgroundColor: 'green',
+    height: 1200,
+  },
+  // Estilos para o texto dos botões de menu e das seções
+  menuButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  sectionText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+    textAlign: 'center',
   },
 });
 
